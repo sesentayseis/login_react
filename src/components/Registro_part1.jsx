@@ -48,12 +48,41 @@ const Registro_part1 =( )=>{
     
     //------------------------------------------------------------
     let idMayor=Math.max(...lista)  
-      
+     /* 
     console.log("Nuevo id: "+(datos.id+idMayor+1)+
     "\nname: "+datos.name+
     "\nemail: "+datos.email+
     "\npasswprd: "+datos.password+
     "\ntipo: "+datos.tipo)
+    //*************************************************POST */
+    if(datos.name=="" || datos.email=="" || datos.password=="" ){
+      alert("Rellena bien los campos")
+    }else{
+        await axios.post(url,
+          {
+            id: datos.id+idMayor+1,
+            name: datos.name,
+            correo:datos.email,
+            password:datos.password,
+            tipo:datos.tipo
+          }
+          )
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        //limpiamos los datos para que no ingrese sin logearse 
+        cookies.remove("id", { path: "/" });
+        cookies.remove("name", { path: "/" });
+        cookies.remove("correo", { path: "/" });
+        cookies.remove("password", { path: "/" });
+        cookies.remove("tipo", { path: "/" });
+        alert("Registro Exitoso, Intente Logearse denuevo")
+        window.location.href="./";
+    }
+    
   }
 
   
@@ -75,6 +104,7 @@ const Registro_part1 =( )=>{
                 placeholder="Nombre completo"
                 name="name"
                 onChange={handleInputChange}
+                required
               />
               <label className="form-label" htmlFor="form2Example11">
               Ingresa tu nombre
@@ -87,6 +117,7 @@ const Registro_part1 =( )=>{
                 placeholder="Dirección de correo electrónico"
                 name="email"
                 onChange={handleInputChange}
+                required
               />
               <label className="form-label" htmlFor="form2Example11">
               Ingresa tu correo
@@ -98,6 +129,7 @@ const Registro_part1 =( )=>{
                 className="form-control"
                 name="password"
                 onChange={handleInputChange}
+                required
               />
               <label className="form-label" htmlFor="form2Example22">
               Clave
